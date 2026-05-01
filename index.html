@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Will's Books</title>
+    <title>Will's and Jess' Books</title>
     <script src="https://unpkg.com/vue@3.0.2"></script>
 
 <style>
@@ -39,6 +39,15 @@
 </head>
 <body>
     <div id="app">
+      <div v-if="WillJess === 0">
+        <h2 >Will's Books</h2>
+        <button style="margin-bottom: 20px;" @click="WillJess = 1">Switch to Jess' Books</button>
+      </div>
+      <div v-else>
+        <h2 >Jess' Books</h2>
+        <button style="margin-bottom: 20px;" @click="WillJess = 0">Switch to Will's Books</button>
+      </div>
+
 <table border="1">
   <thead>
     <tr>
@@ -51,7 +60,7 @@
   </thead>
 
   <tbody>
-    <template v-for="book in books">
+    <template v-for="book in books[WillJess]">
       
       <tr>
         <td>{{ book.title }}</td>
@@ -75,10 +84,10 @@
 
       <div class="modal" @click.stop>
         <h3>
-          Thoughts on {{ books[showingBook].title }}
+          Thoughts on {{ books[WillJess][showingBook].title }}
         </h3>
 
-        <p>{{ books[showingBook].thoughts }}</p>
+        <p>{{ books[WillJess][showingBook].thoughts }}</p>
 
         <button @click="closeBook">Close</button>
       </div>

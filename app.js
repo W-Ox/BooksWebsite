@@ -1,7 +1,7 @@
 const app = Vue.createApp({
     data() {
         return {
-            books: [
+            books: [[
                 {ind:0,title:'The Witcher (series)', author:'Andrzej Sapkowski', year:'2023-2024', showThoughts: false, thoughts: 'Loved the whole series.', rating: 9},
                 {ind:1,title:'Mythos', author:'Stephen Fry', year:2025, showThoughts : false, thoughts : 'This was really enjoyable, although the many names and many short stories towards the end became difficult to take in.', rating : 7},
                 {ind:2,title:'Heroes', author:'Stephen Fry', year:2025, showThoughts : false, thoughts : 'This was a good book, introducing us to some of those well-known names in Greek stories, and I think an improvement on the first in the series - Mythos.', rating : 7},
@@ -18,7 +18,12 @@ const app = Vue.createApp({
                 {ind:13,title:'Catch 22', author:'Joseph Heller', year: '-- Waiting List --', showThoughts : false, thoughts : 'n/a', rating : '-'},
                 {ind:14,title:'The Penguin Book of Norse Myths', author:'Kevin Crossley-Holland', year: '-- Waiting List --', showThoughts : false, thoughts : 'n/a', rating : '-'}
             ],
-            showingBook:-1
+            [                
+                {ind:0,title:'The Hunger Games', author:'Suzanne Collins', year:2026, showThoughts: false, thoughts: 'I\'m not Jess.', rating: 'who knows'},
+                {ind:1,title:'Another boook', author:'someone', year:2025, showThoughts : false, thoughts : 'Good.', rating : 7},
+                ]],
+            showingBook:-1,
+            WillJess: 0
         }
     },
 methods: {
