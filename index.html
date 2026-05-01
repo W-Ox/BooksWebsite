@@ -1,0 +1,50 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will's Books</title>
+    <script src="https://unpkg.com/vue@3.0.2"></script>
+</head>
+<body>
+    <div id="app">
+<table border="1">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Year Read</th>
+      <th>Rating/10</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <template v-for="book in books">
+      
+      <tr>
+        <td>{{ book.title }}</td>
+        <td>{{ book.author }}</td>
+        <td>{{ book.year }}</td>
+        <td>{{ book.rating }}</td>
+        <td>
+          <button @click="toggleShowThoughts(book)">
+            {{ book.showThoughts ? 'Hide thoughts' : 'Show thoughts' }}
+          </button>
+        </td>
+      </tr>
+
+    </template>
+  </tbody>
+</table>
+
+<div v-if="showingBook>=0">
+<h4>Thoughts on '{{ books[showingBook].title }}' by {{ books[showingBook].author }}</h4>
+<p>{{ books[showingBook].thoughts }}</p>
+</div>
+
+  </div>
+
+
+    <script src="app.js"></script>
+</body>
+</html>
