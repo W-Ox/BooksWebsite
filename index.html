@@ -4,6 +4,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Will's Books</title>
     <script src="https://unpkg.com/vue@3.0.2"></script>
+
+<style>
+    table {
+      margin-bottom: 20px;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+
+      background: rgba(0, 0, 0, 0.5);
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      z-index: 9999;
+    }
+
+    .modal {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      min-width: 300px;
+      max-width: 500px;
+    }
+</style>
+
+
 </head>
 <body>
     <div id="app">
@@ -27,9 +59,7 @@
         <td>{{ book.year }}</td>
         <td>{{ book.rating }}</td>
         <td>
-          <button @click="toggleShowThoughts(book)">
-            {{ book.showThoughts ? 'Hide thoughts' : 'Show thoughts' }}
-          </button>
+          <button @click="openBook(book)">Show thoughts</button>
         </td>
       </tr>
 
@@ -37,10 +67,24 @@
   </tbody>
 </table>
 
-<div v-if="showingBook>=0">
-<h4>Thoughts on '{{ books[showingBook].title }}' by {{ books[showingBook].author }}</h4>
-<p>{{ books[showingBook].thoughts }}</p>
-</div>
+
+
+    <div v-if="showingBook >= 0"
+         class="overlay"
+         @click="closeBook">
+
+      <div class="modal" @click.stop>
+        <h3>
+          Thoughts on {{ books[showingBook].title }}
+        </h3>
+
+        <p>{{ books[showingBook].thoughts }}</p>
+
+        <button @click="closeBook">Close</button>
+      </div>
+
+    </div>
+
 
   </div>
 
