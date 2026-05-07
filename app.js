@@ -11,10 +11,12 @@ const app = Vue.createApp({
             showingBook:null,
             WillJess: 0,
             showAdd: false,
+            dddBook:null,
+            editingBook: null,
             newBook: {
               Title: '',
               Author: '',
-              Year: '',
+              YearRead: '',
               Rating: '',
               Thoughts: ''
             }
@@ -46,9 +48,16 @@ methods: {
   },
 
 handleKeyPress(event) {
-  if (!this.showingBook) return
+  if (event.key !== 'Escape') return
 
-  if (event.key === 'Escape') {
+  if (this.showAdd || this.editingBook) return
+
+  if (this.dddBook) {
+    this.closeOptionsBook()
+    return
+  }
+
+  if (this.showingBook) {
     this.closeBook()
   }
 },
@@ -56,22 +65,33 @@ handleKeyPress(event) {
   async addBook() {
   const tableName = this.WillJess === 0 ? 'WillBooks' : 'JessBooks'
 
-  await client
+  const { data, error } = await client
     .from(tableName)
     .insert([
       { 
         Title: this.newBook.Title,
         Author: this.newBook.Author,
-        Year: this.newBook.Year,
+        YearRead: this.newBook.YearRead,
         Rating: this.newBook.Rating,
         Thoughts: this.newBook.Thoughts
       }
     ])
 
-  this.newBook = { Title: '', Author: '', Year: '', Rating: '', Thoughts: '' }
+    if (error) {
+    console.error("Supabase error:", error)
+    return
+  }
+
+  console.log("Inserted:", data)
+
+  this.newBook = { Title: '', Author: '', YearRead: '', Rating: '', Thoughts: '' }
   this.showAdd = false
   this.loadBooks()
 },
+
+  closeAddBook() {
+    this.showAdd = false
+  },
 
   openBook(book) {
     this.showingBook = book
@@ -79,6 +99,60 @@ handleKeyPress(event) {
   closeBook() {
     this.showingBook = null
   },
+  optionsBook(book) {
+    this.dddBook = book
+  },
+  closeOptionsBook() {
+    this.dddBook = null
+  },
+
+  editBook(book) {
+  // switch modal from options view → edit view
+  this.editingBook = book
+
+  // copy current book data into the form (this is what autofills inputs)
+  this.newBook = {
+    Title: book.Title,
+    Author: book.Author,
+    YearRead: book.YearRead,
+    Rating: book.Rating,
+    Thoughts: book.Thoughts
+  }
+  },
+
+  stopEditBook() {
+  this.editingBook = null
+  this.dddBook = null
+  this.newBook = { Title: '', Author: '', YearRead: '', Rating: '', Thoughts: '' }
+  },
+
+
+  async saveBook() {
+  const tableName = this.WillJess === 0 ? 'WillBooks' : 'JessBooks'
+
+  const { error } = await client
+    .from(tableName)
+    .update({
+      Title: this.newBook.Title,
+      Author: this.newBook.Author,
+      YearRead: this.newBook.YearRead,
+      Rating: this.newBook.Rating,
+      Thoughts: this.newBook.Thoughts
+    })
+    .eq('id', this.editingBook.id)
+
+  if (error) {
+    console.error('Update error:', error)
+    return
+  }
+
+  // reset state
+  this.editingBook = null
+  this.dddBook = null
+  this.newBook = { Title: '', Author: '', Year: '', Rating: '', Thoughts: '' }
+
+  this.loadBooks()
+},
 
   async deleteBook(id) {
   const tableName = this.WillJess === 0 ? 'WillBooks' : 'JessBooks'
@@ -89,6 +163,8 @@ handleKeyPress(event) {
     .eq('id', id)
 
   this.loadBooks()
+
+  this.dddBook = null
 }
 }
 })

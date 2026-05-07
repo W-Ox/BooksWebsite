@@ -50,14 +50,14 @@
 
   <button style="margin-bottom: 20px;" @click="showAdd = true">Add Book</button>
   <div v-if="showAdd" class="overlay">
-  <div class="modal">
+  <div class="modal" @click.stop>
     <h3>Add Book</h3>
 
     <input v-model="newBook.Title" placeholder="Title">
     <input v-model="newBook.Author" placeholder="Author">
-    <input v-model="newBook.Year" placeholder="Year Read">
+    <input v-model="newBook.YearRead" placeholder="Year Read">
     <input v-model="newBook.Rating" placeholder="Rating/10">
-    <textarea v-model="newBook.Thoughts" placeholder="Your thoughts..." rows="6" cols="40"></textarea>
+    <textarea v-model="newBook.Thoughts" placeholder="Your thoughts..." rows="6" cols="45"></textarea>
 
     <button @click="addBook">Save Book</button>
     <button @click="showAdd = false">Close</button>
@@ -81,11 +81,11 @@
       <tr>
         <td>{{ book.Title }}</td>
         <td>{{ book.Author }}</td>
-        <td>{{ book.Year }}</td>
+        <td>{{ book.YearRead }}</td>
         <td>{{ book.Rating }}</td>
         <td>
           <button @click="openBook(book)">Show thoughts</button>
-          <button @click="deleteBook(book.id)">X</button>
+          <button @click="optionsBook(book)">...</button>
         </td>
       </tr>
 
@@ -93,6 +93,34 @@
   </tbody>
 </table>
 
+
+    <div v-if="dddBook"
+         class="overlay"
+         @click="!editingBook && closeOptionsBook()">
+
+      <div class="modal" @click.stop v-if="!editingBook">
+        <h3>
+          Options for {{ dddBook.Title }}
+        </h3>
+        <button @click="editBook(dddBook)">Edit Book</button>
+        <button @click="deleteBook(dddBook.id)">Delete Book</button>
+        <button @click="closeOptionsBook">Close</button>
+      </div>
+
+      <div class="modal" @click.stop v-else>
+        <h3>Edit {{ dddBook.Title }}</h3>
+
+        <input v-model="newBook.Title" placeholder="Title">
+        <input v-model="newBook.Author" placeholder="Author">
+        <input v-model="newBook.YearRead" placeholder="Year Read">
+        <input v-model="newBook.Rating" placeholder="Rating/10">
+        <textarea v-model="newBook.Thoughts" rows="6"></textarea>
+
+        <button @click="saveBook">Update Book</button>
+        <button @click="stopEditBook">Cancel</button>
+      </div>
+
+    </div>
 
 
     <div v-if="showingBook"
