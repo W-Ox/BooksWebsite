@@ -1,0 +1,23 @@
+.add-btn {
+  margin: 10px 0;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  background: #42b983;
+  color: white;
+  transition: opacity 0.2s ease;
+}
+
+.add-btn:hover {
+  opacity: 0.4;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin: 20px;
+}
